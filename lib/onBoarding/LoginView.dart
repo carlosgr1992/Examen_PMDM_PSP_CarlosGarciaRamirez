@@ -1,6 +1,12 @@
+import 'package:examen_pmdm_psp_carlosgarciaramirez/customViews/TextButtonCustom.dart';
 import 'package:flutter/material.dart';
 
+import '../customViews/TextFieldCustom.dart';
+
 class LoginView extends StatelessWidget {
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,64 +30,25 @@ class LoginView extends StatelessWidget {
               ),
             ),
             SizedBox(height: 80),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50.0),
-              child: TextField(
-
-                decoration: InputDecoration(
-                  fillColor: Color(0xFFBAF9FF),
-                  filled: true,
-                  hintText: "Introduzca su usuario",
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.lightBlueAccent),
-                  ),
-                ),
-              ),
-            ),
+            TextFieldCustom(
+                hintText: "Introduzca su usuario",
+                controller: emailController),
             SizedBox(height: 30),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50.0),
-              child: TextFormField(
-
-                decoration: InputDecoration(
-                  fillColor: Color(0xFFBAF9FF),
-                  filled: true,
-                  hintText: "Introduzca su contraseña",
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.lightBlueAccent),
-                  ),
-                ),
-                obscureText: true,
-              ),
-            ),
+            TextFieldCustom(
+                hintText: "introduzca contraseña",
+                controller: passController,
+                obscureText: true),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
                   height: 120,
                 ),
-                TextButton(
-                  onPressed: null,
-                  style: ButtonStyle(
-                      side: MaterialStateProperty.all(
-                          BorderSide(color: Colors.lightBlueAccent))),
-                  child: Text(
-                    "Login",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
+                TextButtonCustom(onPressed: null, text: "Login"),
                 SizedBox(
                   width: 50,
                 ),
-                TextButton(
-                    onPressed: null,
-                    style: ButtonStyle(
-                        side: MaterialStateProperty.all(
-                            BorderSide(color: Colors.lightBlueAccent))),
-                    child: Text(
-                      "Registrar",
-                      style: TextStyle(color: Colors.black),
-                    ))
+          TextButtonCustom(onPressed: null, text: "Registrar"),
               ],
             )
           ],
