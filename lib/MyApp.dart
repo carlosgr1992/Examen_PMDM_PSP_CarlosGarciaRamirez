@@ -1,3 +1,4 @@
+import 'package:examen_pmdm_psp_carlosgarciaramirez/onBoarding/HomeView.dart';
 import 'package:examen_pmdm_psp_carlosgarciaramirez/onBoarding/LoginView.dart';
 import 'package:examen_pmdm_psp_carlosgarciaramirez/onBoarding/Splash.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,6 +13,7 @@ class MyApp extends StatelessWidget {
     routes: {
         "/splashView": (context) => Splash(),
         "/loginView": (context) => LoginView(),
+        "/homeView": (context) => HomeView(),
 
     },
     initialRoute: "/loginView",

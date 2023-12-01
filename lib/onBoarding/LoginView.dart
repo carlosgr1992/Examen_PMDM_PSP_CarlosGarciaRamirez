@@ -7,9 +7,12 @@ class LoginView extends StatelessWidget {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
+  late BuildContext _context;
 
   @override
   Widget build(BuildContext context) {
+    _context=context;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Login"),
@@ -44,7 +47,7 @@ class LoginView extends StatelessWidget {
                 SizedBox(
                   height: 120,
                 ),
-                TextButtonCustom(onPressed: null, text: "Login"),
+                TextButtonCustom(onPressed: onClickLogin, text: "Login"),
                 SizedBox(
                   width: 50,
                 ),
@@ -55,5 +58,11 @@ class LoginView extends StatelessWidget {
         ),
       ),
     );
+  }
+  
+  void onClickLogin(){
+    
+    Navigator.of(_context).popAndPushNamed("/homeView");
+    
   }
 }
