@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../fireStoreObjets/FbUsuario.dart';
 
 class FirebaseAdmin {
+  final FirebaseFirestore db = FirebaseFirestore.instance;
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseFirestore _db = FirebaseFirestore.instance;
 
@@ -55,5 +56,32 @@ class FirebaseAdmin {
       print("Error al obtener información del usuario: $e");
     }
     return null;
+  }
+
+  Future<List<FbUsuario>> obtenerUsuarios() async {
+    List<FbUsuario> usuarios = [];
+
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+      await db.collection('Usuarios').get();
+
+      for (QueryDocumentSnapshot<Map<String, dynamic>> document
+      in querySnapshot.docs) {
+        // Crea un nuevo objeto FbUsuario para cada documento y agrégalo a la lista
+        FbUsuario usuario = FbUsuario(
+          nombre: document.data()['nombre'] ?? '',
+          apellidos: document.data()['apellidos'] ?? '',
+          edad: document.data()['edad'] ?? 0,
+        );
+
+        usuarios.add(usuario);
+      }
+
+      return usuarios;
+    } catch (e) {
+      // Manejo de errores
+      print('Error al obtener usuarios: $e');
+      return [];
+    }
   }
 }
