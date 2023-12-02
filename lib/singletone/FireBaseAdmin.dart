@@ -5,5 +5,5 @@ class FirebaseAdmin{
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore db = FirebaseFirestore.instance;
 
-  
+
 }
