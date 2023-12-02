@@ -1,4 +1,5 @@
 import 'package:examen_pmdm_psp_carlosgarciaramirez/customViews/TextButtonCustom.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../customViews/TextFieldCustom.dart';
@@ -66,11 +67,24 @@ class LoginView extends StatelessWidget {
     Navigator.of(_context).popAndPushNamed("/registerView");
 
   }
-  
-  void onClickLogin(){
 
+  void onClickLogin() async {
+    String email = tecEmailController.text;
+    String password = tecPassController.text;
 
-    Navigator.of(_context).popAndPushNamed("/homeView");
-    
+    // Realizar autenticación con FirebaseAdmin
+    User? user = await DataHolder.firebaseAdmin.signIn(email, password);
+
+    if (user != null) {
+      // Usuario autenticado correctamente
+      Navigator.of(_context).popAndPushNamed("/homeView");
+    } else {
+      // Mostrar Snackbar indicando que el usuario no existe
+      final snackBar = SnackBar(
+        content: Text('Usuario o contraseña incorrectos'),
+        duration: Duration(seconds: 3),
+      );
+      ScaffoldMessenger.of(_context).showSnackBar(snackBar);
+    }
   }
 }
