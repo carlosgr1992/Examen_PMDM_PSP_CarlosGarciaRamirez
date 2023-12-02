@@ -2,6 +2,7 @@ import 'package:examen_pmdm_psp_carlosgarciaramirez/customViews/TextButtonCustom
 import 'package:flutter/material.dart';
 
 import '../customViews/TextFieldCustom.dart';
+import '../singletone/DataHolder.dart';
 
 class LoginView extends StatelessWidget {
 
@@ -67,7 +68,8 @@ class LoginView extends StatelessWidget {
   }
   
   void onClickLogin(){
-    
+
+
     Navigator.of(_context).popAndPushNamed("/homeView");
     
   }
