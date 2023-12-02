@@ -51,13 +51,19 @@ class RegisterView extends StatelessWidget{
                 SizedBox(
                   width: 50,
                 ),
-                TextButtonCustom(onPressed: null, text: "Cancelar")
+                TextButtonCustom(onPressed: onClickCancelar, text: "Cancelar")
               ],
             )
           ],
         ),
       ),
     );
+  }
+
+  void onClickCancelar(){
+
+    Navigator.of(_context).popAndPushNamed("/loginView");
+
   }
 
 }
