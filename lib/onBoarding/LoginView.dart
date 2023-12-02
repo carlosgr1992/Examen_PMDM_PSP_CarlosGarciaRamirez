@@ -5,8 +5,8 @@ import '../customViews/TextFieldCustom.dart';
 
 class LoginView extends StatelessWidget {
 
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passController = TextEditingController();
+  final TextEditingController tecEmailController = TextEditingController();
+  final TextEditingController tecPassController = TextEditingController();
   late BuildContext _context;
 
   @override
@@ -35,11 +35,11 @@ class LoginView extends StatelessWidget {
             SizedBox(height: 80),
             TextFieldCustom(
                 hintText: "Introduzca su usuario",
-                controller: emailController),
+                controller: tecEmailController),
             SizedBox(height: 30),
             TextFieldCustom(
                 hintText: "introduzca contraseña",
-                controller: passController,
+                controller: tecPassController,
                 obscureText: true),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -51,13 +51,19 @@ class LoginView extends StatelessWidget {
                 SizedBox(
                   width: 50,
                 ),
-          TextButtonCustom(onPressed: null, text: "Registrar"),
+          TextButtonCustom(onPressed: onClickRegister, text: "Registrar"),
               ],
             )
           ],
         ),
       ),
     );
+  }
+
+  void onClickRegister(){
+
+    Navigator.of(_context).popAndPushNamed("/registerView");
+
   }
   
   void onClickLogin(){
