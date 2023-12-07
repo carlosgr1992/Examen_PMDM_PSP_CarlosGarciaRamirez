@@ -6,6 +6,7 @@ import '../singletone/FireBaseAdmin.dart';
 
 class HomeView extends StatelessWidget {
   final FirebaseAdmin firebaseAdmin = FirebaseAdmin();
+  bool isList = true;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class HomeView extends StatelessWidget {
               List<FbUsuario>? usuarios = snapshot.data;
 
               if (usuarios != null && usuarios.isNotEmpty) {
-                return muestraListView(usuarios);
+                return isList ? muestraListView(usuarios) : muestraGridView(usuarios);
               } else {
                 return Text('No hay usuarios disponibles.');
               }
@@ -49,4 +50,25 @@ class HomeView extends StatelessWidget {
       },
     );
   }
+
+  Widget muestraGridView(List<FbUsuario> usuarios) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2, // Número de columnas
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10, 
+      ),
+      itemCount: usuarios.length,
+      itemBuilder: (context, index) {
+        FbUsuario usuario = usuarios[index];
+        return Card(
+          child: Center(
+            child: Text('${usuario.nombre} ${usuario.apellidos} - Edad: ${usuario.edad}'),
+          ),
+        );
+      },
+    );
+  }
+
+
 }
