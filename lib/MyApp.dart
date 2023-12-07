@@ -1,3 +1,4 @@
+import 'package:examen_pmdm_psp_carlosgarciaramirez/onBoarding/AjustesView.dart';
 import 'package:examen_pmdm_psp_carlosgarciaramirez/onBoarding/HomeView.dart';
 import 'package:examen_pmdm_psp_carlosgarciaramirez/onBoarding/LoginView.dart';
 import 'package:examen_pmdm_psp_carlosgarciaramirez/onBoarding/Splash.dart';
@@ -17,7 +18,6 @@ class MyApp extends StatelessWidget {
         "/loginView": (context) => LoginView(),
         "/homeView": (context) => HomeView(),
         "/registerView": (context) => RegisterView(),
-
     },
     initialRoute: "/loginView",
     );
