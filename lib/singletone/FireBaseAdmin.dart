@@ -43,6 +43,23 @@ class FirebaseAdmin {
     }
   }
 
+  Future<FbUsuario?> getCurrentUser() async {
+    User? user = _auth.currentUser;
+
+    if (user != null) {
+      try {
+        DocumentSnapshot<Map<String, dynamic>> snapshot =
+        await _db.collection('Usuarios').doc(user.uid).get();
+        if (snapshot.exists) {
+          return FbUsuario.fromFirestore(snapshot, null);
+        }
+      } catch (e) {
+        print("Error al obtener información del usuario actual: $e");
+      }
+    }
+    return null;
+  }
+
   Future<FbUsuario?> getUserInfo() async {
     try {
       User? user = _auth.currentUser;

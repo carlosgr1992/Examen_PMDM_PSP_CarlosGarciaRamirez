@@ -1,7 +1,9 @@
+import 'package:examen_pmdm_psp_carlosgarciaramirez/singletone/DataHolder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../customViews/ButtonBarCustom.dart';
+import '../customViews/DrawerCustom.dart';
 import '../fireStoreObjets/FbUsuario.dart';
 import '../singletone/FireBaseAdmin.dart';
 
@@ -12,7 +14,6 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   bool isList = true; // Variable de estado para controlar la vista
-  final FirebaseAdmin firebaseAdmin = FirebaseAdmin();
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +21,18 @@ class _HomeViewState extends State<HomeView> {
       appBar: AppBar(
         title: Text('Usuarios de la red social'),
       ),
+      drawer: FutureBuilder<FbUsuario?>(
+        future: DataHolder.firebaseAdmin.getCurrentUser(),
+        builder: (context, snapshot) {
+          FbUsuario usuario = snapshot.data ?? FbUsuario(nombre: "Invitado", apellidos: "", edad: 0);
+          return DrawerCustom(currentUser: usuario);
+        },
+      ),
       body: Column(
         children: [
           Expanded(
             child: FutureBuilder<List<FbUsuario>>(
-              future: firebaseAdmin.obtenerUsuarios(),
+              future: DataHolder.firebaseAdmin.obtenerUsuarios(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
