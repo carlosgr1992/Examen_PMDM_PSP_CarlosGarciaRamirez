@@ -60,13 +60,14 @@ class _EditUserViewState extends State<EditUserView> {
   }
 
   void _updateUser() async {
-    await DataHolder.firebaseAdmin.updateUser(
-      widget.uid,
-      _nombreController.text,
-      _apellidosController.text,
-      int.parse(_edadController.text),
-      widget.usuario.urlImagen ?? '',
+    FbUsuario updatedUsuario = FbUsuario(
+      nombre: _nombreController.text,
+      apellidos: _apellidosController.text,
+      edad: int.parse(_edadController.text),
+      urlImagen: widget.usuario.urlImagen,
     );
+
+    await DataHolder.firebaseAdmin.updateUserDetails(updatedUsuario);
     Navigator.pop(context);
   }
 }

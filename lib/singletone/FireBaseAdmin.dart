@@ -153,4 +153,15 @@ class FirebaseAdmin {
       return [];
     }
   }
+
+  Future<void> updateUserDetails(FbUsuario usuario) async {
+    String uid = FirebaseAuth.instance.currentUser?.uid ?? '';
+    if (uid.isNotEmpty) {
+      await db.collection('Usuarios').doc(uid).set(usuario.toFirestore());
+    } else {
+      print('Error: UID del usuario actual no disponible');
+    }
+  }
+
+
 }
