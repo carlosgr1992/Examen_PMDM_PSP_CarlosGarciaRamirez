@@ -163,6 +163,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
+  
   Widget muestraGridView(List<FbUsuario> usuarios) {
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
