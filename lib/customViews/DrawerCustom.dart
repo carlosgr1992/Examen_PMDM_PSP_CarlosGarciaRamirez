@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../fireStoreObjets/FbUsuario.dart';
 import '../onBoarding/AjustesView.dart';
+import '../onBoarding/UsuarioDetailsView.dart';
 
 class DrawerCustom extends StatelessWidget {
   final FbUsuario? currentUser;
@@ -43,9 +44,9 @@ class DrawerCustom extends StatelessWidget {
             onTap: () {
               if (currentUser != null && uid != null) {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AjustesView(usuario: currentUser!, uid: uid!),
+                  builder: (context) => UsuarioDetailsView(usuario: currentUser!, uid: uid!),
                 ));
-              } else {
+              }else {
 
               }
             },

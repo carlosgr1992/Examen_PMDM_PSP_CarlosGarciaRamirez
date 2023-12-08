@@ -109,11 +109,13 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    String? currentUid = currentUser != null ? FirebaseAuth.instance.currentUser?.uid : null;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Usuarios de la red social'),
       ),
-      drawer: DrawerCustom(currentUser: currentUser ?? FbUsuario(nombre: "Invitado", apellidos: "", edad: 0)),
+      drawer: DrawerCustom(currentUser: currentUser ?? FbUsuario(nombre: "Invitado", apellidos: "", edad: 0), uid: currentUid,),
       body: Column(
         children: [
           Expanded(
