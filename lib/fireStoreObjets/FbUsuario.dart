@@ -20,7 +20,7 @@ class FbUsuario {
       nombre: data?['nombre'] ?? "",
       apellidos: data?['apellidos'] ?? "",
       edad: (data?['edad'] ?? 0) is int ? data!['edad'] as int : 0,
-      urlImagen: data?['urlImagen'], // Añade esto
+      urlImagen: data?['urlImagen'],
     );
   }
 

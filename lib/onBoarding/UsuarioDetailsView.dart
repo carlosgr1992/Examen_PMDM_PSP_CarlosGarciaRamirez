@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import '../fireStoreObjets/FbUsuario.dart';
+import '../onBoarding/EditUserView.dart'; // Asegúrate de tener esta vista para la edición del usuario
 
 class UsuarioDetailsView extends StatelessWidget {
   final FbUsuario usuario;
+  final String uid;
 
-  UsuarioDetailsView({required this.usuario});
+  UsuarioDetailsView({required this.usuario, required this.uid});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class UsuarioDetailsView extends StatelessWidget {
             usuario.urlImagen != null && usuario.urlImagen!.isNotEmpty
                 ? Image.network(
               usuario.urlImagen!,
-              width: 100, // o el tamaño que prefieras
+              width: 100,
               height: 100,
               fit: BoxFit.cover,
             )
@@ -32,9 +34,18 @@ class UsuarioDetailsView extends StatelessWidget {
             Text('Nombre: ${usuario.nombre}'),
             Text('Apellidos: ${usuario.apellidos}'),
             Text('Edad: ${usuario.edad}'),
-            // Puedes añadir más detalles aquí
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.edit),
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => EditUserView(usuario: usuario, uid: uid), // Utiliza el uid pasado como parámetro
+            ),
+          );
+        },
       ),
     );
   }

@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../fireStoreObjets/FbUsuario.dart';
+import 'EditUserView.dart';
 
 class AjustesView extends StatelessWidget {
   final FbUsuario usuario;
+  final String uid;
 
-  AjustesView({required this.usuario});
+  AjustesView({required this.usuario, required this.uid});
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +30,23 @@ class AjustesView extends StatelessWidget {
               radius: 50.0,
               child: Icon(Icons.person),
             ),
+
             SizedBox(height: 10),
             Text('Nombre: ${usuario.nombre}'),
             Text('Apellidos: ${usuario.apellidos}'),
             Text('Edad: ${usuario.edad}'),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.edit),
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => EditUserView(usuario: usuario, uid: uid), // Utiliza el uid pasado como parámetro
+            ),
+          );
+        },
       ),
     );
   }

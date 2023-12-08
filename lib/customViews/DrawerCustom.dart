@@ -6,8 +6,9 @@ import '../onBoarding/AjustesView.dart';
 
 class DrawerCustom extends StatelessWidget {
   final FbUsuario? currentUser;
+  final String? uid;
 
-  DrawerCustom({required this.currentUser});
+  DrawerCustom({required this.currentUser, this.uid});
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +41,9 @@ class DrawerCustom extends StatelessWidget {
             leading: Icon(Icons.settings),
             title: Text('Ajustes'),
             onTap: () {
-              if (currentUser != null) {
+              if (currentUser != null && uid != null) {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AjustesView(usuario: currentUser!),
+                  builder: (context) => AjustesView(usuario: currentUser!, uid: uid!),
                 ));
               } else {
 

@@ -22,6 +22,15 @@ class FirebaseAdmin {
     }
   }
 
+  Future<void> updateUser(String uid, String nombre, String apellidos, int edad, String imagen) async {
+    await FirebaseFirestore.instance.collection('Usuarios').doc(uid).update({
+      'nombre': nombre,
+      'apellidos': apellidos,
+      'edad': edad,
+      'urlImagen' : imagen,
+    });
+  }
+
   Future<void> addUserDetails(String email, String password, String nombre, String apellidos, int edad, String urlImagen) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
@@ -48,7 +57,13 @@ class FirebaseAdmin {
         await FirebaseFirestore.instance.collection('Usuarios').doc(currentUser.uid).get();
 
         if (snapshot.exists && snapshot.data() != null) {
-          return FbUsuario.fromFirestore(snapshot, null);
+          var usuarioData = FbUsuario.fromFirestore(snapshot, null);
+          return FbUsuario(
+              nombre: usuarioData.nombre,
+              apellidos: usuarioData.apellidos,
+              edad: usuarioData.edad,
+              urlImagen: usuarioData.urlImagen
+          );
         }
       } catch (e) {
         print('Error al cargar el usuario: $e');

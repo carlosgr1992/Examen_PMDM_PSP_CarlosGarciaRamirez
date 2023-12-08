@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:examen_pmdm_psp_carlosgarciaramirez/singletone/DataHolder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,7 +8,8 @@ import '../customViews/ButtonBarCustom.dart';
 import '../customViews/DrawerCustom.dart';
 import '../fireStoreObjets/FbUsuario.dart';
 import '../singletone/FireBaseAdmin.dart';
-import 'UsuarioDetalisView.dart';
+import 'AjustesView.dart';
+import 'UsuarioDetailsView.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -15,13 +17,15 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  bool isList = true; // Variable de estado para controlar la vista
-  FbUsuario? currentUser; // Usuario actual
+  bool isList = true;
+  FbUsuario? currentUser;
+  Map<String, FbUsuario> usuariosMap = {}; // Nuevo mapa para usuarios y sus UIDs
 
   @override
   void initState() {
     super.initState();
     _loadCurrentUser();
+    _loadUsuarios(); // Llamar a la nueva función para cargar usuarios
   }
 
   void _loadCurrentUser() async {
@@ -31,6 +35,76 @@ class _HomeViewState extends State<HomeView> {
         currentUser = user;
       });
     }
+  }
+
+  void _loadUsuarios() async {
+    // Lógica para cargar usuarios y sus uids
+    var snapshot = await FirebaseFirestore.instance.collection('Usuarios').get();
+    var usuariosTemp = <String, FbUsuario>{};
+    for (var doc in snapshot.docs) {
+      usuariosTemp[doc.id] = FbUsuario.fromFirestore(doc, null);
+    }
+    setState(() {
+      usuariosMap = usuariosTemp;
+    });
+  }
+
+  void _navigateToAjustesView(String uid, FbUsuario usuario) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => AjustesView(usuario: usuario, uid: uid),
+      ),
+    );
+  }
+
+  Widget muestraListView(List<FbUsuario> usuarios) {
+    return ListView.builder(
+      itemCount: usuarios.length,
+      itemBuilder: (context, index) {
+        FbUsuario usuario = usuarios[index];
+        String uid = usuariosMap.keys.firstWhere((key) => usuariosMap[key] == usuario, orElse: () => '');
+        return ListTile(
+          title: Text('${usuario.nombre} ${usuario.apellidos} - Edad: ${usuario.edad}'),
+          onTap: () => _navigateToAjustesView(uid, usuario),
+        );
+      },
+    );
+  }
+
+  Widget muestraGridView(List<FbUsuario> usuarios) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+      ),
+      itemCount: usuarios.length,
+      itemBuilder: (context, index) {
+        FbUsuario usuario = usuarios[index];
+        String uid = usuariosMap.keys.firstWhere((key) => usuariosMap[key] == usuario, orElse: () => '');
+        return GestureDetector(
+          onTap: () => _navigateToAjustesView(uid, usuario),
+          child: Card(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                usuario.urlImagen != null && usuario.urlImagen!.isNotEmpty
+                    ? Image.network(
+                  usuario.urlImagen!,
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.cover,
+                )
+                    : Icon(Icons.person, size: 80),
+                SizedBox(height: 10),
+                Text('${usuario.nombre} ${usuario.apellidos}'),
+                Text('Edad: ${usuario.edad}'),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -79,70 +153,6 @@ class _HomeViewState extends State<HomeView> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget muestraListView(List<FbUsuario> usuarios) {
-    return ListView.builder(
-      itemCount: usuarios.length,
-      itemBuilder: (context, index) {
-        FbUsuario usuario = usuarios[index];
-        return ListTile(
-          title: Text('${usuario.nombre} ${usuario.apellidos} - Edad: ${usuario.edad}'),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => UsuarioDetailsView(usuario: usuario),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Widget muestraGridView(List<FbUsuario> usuarios) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-      ),
-      itemCount: usuarios.length,
-      itemBuilder: (context, index) {
-        FbUsuario usuario = usuarios[index];
-        return GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => UsuarioDetailsView(usuario: usuario),
-              ),
-            );
-          },
-          child: Card(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // Imagen o ícono
-                usuario.urlImagen != null && usuario.urlImagen!.isNotEmpty
-                    ? Image.network(
-                  usuario.urlImagen!,
-                  width: 80, // Ajusta según tu diseño
-                  height: 80,
-                  fit: BoxFit.cover,
-                )
-                    : Icon(
-                  Icons.person,
-                  size: 80, // Tamaño del ícono
-                ),
-                SizedBox(height: 10), // Espaciado
-                Text('${usuario.nombre} ${usuario.apellidos}'),
-                Text('Edad: ${usuario.edad}'),
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 }
