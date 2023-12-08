@@ -7,6 +7,7 @@ import '../customViews/ButtonBarCustom.dart';
 import '../customViews/DrawerCustom.dart';
 import '../fireStoreObjets/FbUsuario.dart';
 import '../singletone/FireBaseAdmin.dart';
+import 'UsuarioDetalisView.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -88,6 +89,13 @@ class _HomeViewState extends State<HomeView> {
         FbUsuario usuario = usuarios[index];
         return ListTile(
           title: Text('${usuario.nombre} ${usuario.apellidos} - Edad: ${usuario.edad}'),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => UsuarioDetailsView(usuario: usuario),
+              ),
+            );
+          },
         );
       },
     );
@@ -103,9 +111,35 @@ class _HomeViewState extends State<HomeView> {
       itemCount: usuarios.length,
       itemBuilder: (context, index) {
         FbUsuario usuario = usuarios[index];
-        return Card(
-          child: Center(
-            child: Text('${usuario.nombre} ${usuario.apellidos} - Edad: ${usuario.edad}'),
+        return GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => UsuarioDetailsView(usuario: usuario),
+              ),
+            );
+          },
+          child: Card(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                // Imagen o ícono
+                usuario.urlImagen != null && usuario.urlImagen!.isNotEmpty
+                    ? Image.network(
+                  usuario.urlImagen!,
+                  width: 80, // Ajusta según tu diseño
+                  height: 80,
+                  fit: BoxFit.cover,
+                )
+                    : Icon(
+                  Icons.person,
+                  size: 80, // Tamaño del ícono
+                ),
+                SizedBox(height: 10), // Espaciado
+                Text('${usuario.nombre} ${usuario.apellidos}'),
+                Text('Edad: ${usuario.edad}'),
+              ],
+            ),
           ),
         );
       },
