@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../fireStoreObjets/FbUsuario.dart';
 
 class FirebaseAdmin {
+
   final FirebaseFirestore db = FirebaseFirestore.instance;
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -19,6 +20,41 @@ class FirebaseAdmin {
       print("Error en inicio de sesión: $e");
       return null;
     }
+  }
+
+  Future<void> addUserDetails(String email, String password, String nombre, String apellidos, int edad, String urlImagen) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+      String uid = userCredential.user!.uid;
+
+      // Guardar detalles adicionales en Firestore
+      await FirebaseFirestore.instance.collection('Usuarios').doc(uid).set({
+        'nombre': nombre,
+        'apellidos': apellidos,
+        'edad' : edad,
+        'urlImagen' : urlImagen,
+      });
+    } catch (e) {
+      print("Error al registrar usuario: $e");
+    }
+  }
+
+  Future<FbUsuario?> loadFbUsuario() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser != null) {
+      try {
+        DocumentSnapshot<Map<String, dynamic>> snapshot =
+        await FirebaseFirestore.instance.collection('Usuarios').doc(currentUser.uid).get();
+
+        if (snapshot.exists && snapshot.data() != null) {
+          return FbUsuario.fromFirestore(snapshot, null);
+        }
+      } catch (e) {
+        print('Error al cargar el usuario: $e');
+      }
+    }
+    return null;
   }
 
   Future<void> signOut() async {
@@ -51,6 +87,7 @@ class FirebaseAdmin {
         DocumentSnapshot<Map<String, dynamic>> snapshot =
         await _db.collection('Usuarios').doc(user.uid).get();
         if (snapshot.exists) {
+          print("Usuario encontrado: ${snapshot.data()}");
           return FbUsuario.fromFirestore(snapshot, null);
         }
       } catch (e) {

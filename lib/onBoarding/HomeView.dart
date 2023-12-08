@@ -1,4 +1,5 @@
 import 'package:examen_pmdm_psp_carlosgarciaramirez/singletone/DataHolder.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,22 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   bool isList = true; // Variable de estado para controlar la vista
+  FbUsuario? currentUser; // Usuario actual
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCurrentUser();
+  }
+
+  void _loadCurrentUser() async {
+    FbUsuario? user = await DataHolder.firebaseAdmin.loadFbUsuario();
+    if (mounted) {
+      setState(() {
+        currentUser = user;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +38,7 @@ class _HomeViewState extends State<HomeView> {
       appBar: AppBar(
         title: Text('Usuarios de la red social'),
       ),
-      drawer: FutureBuilder<FbUsuario?>(
-        future: DataHolder.firebaseAdmin.getCurrentUser(),
-        builder: (context, snapshot) {
-          FbUsuario usuario = snapshot.data ?? FbUsuario(nombre: "Invitado", apellidos: "", edad: 0);
-          return DrawerCustom(currentUser: usuario);
-        },
-      ),
+      drawer: DrawerCustom(currentUser: currentUser ?? FbUsuario(nombre: "Invitado", apellidos: "", edad: 0)),
       body: Column(
         children: [
           Expanded(

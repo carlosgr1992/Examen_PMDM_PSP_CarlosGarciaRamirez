@@ -5,7 +5,7 @@ import '../fireStoreObjets/FbUsuario.dart';
 import '../onBoarding/AjustesView.dart';
 
 class DrawerCustom extends StatelessWidget {
-  final FbUsuario currentUser;
+  final FbUsuario? currentUser;
 
   DrawerCustom({required this.currentUser});
 
@@ -13,10 +13,18 @@ class DrawerCustom extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-        padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text('Menú'),
+            child: currentUser != null
+                ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('Bienvenido, ${currentUser!.nombre}', style: TextStyle(color: Colors.white)),
+                Text('${currentUser!.apellidos}', style: TextStyle(color: Colors.white)),
+              ],
+            )
+                : Text('Bienvenido, Invitado', style: TextStyle(color: Colors.white)),
             decoration: BoxDecoration(
               color: Colors.blue,
             ),
@@ -32,10 +40,13 @@ class DrawerCustom extends StatelessWidget {
             leading: Icon(Icons.settings),
             title: Text('Ajustes'),
             onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => AjustesView(usuario: currentUser),
-              ));
+              if (currentUser != null) {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => AjustesView(usuario: currentUser!),
+                ));
+              } else {
+
+              }
             },
           ),
           ListTile(
