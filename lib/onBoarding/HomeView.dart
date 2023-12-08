@@ -42,7 +42,7 @@ class _HomeViewState extends State<HomeView> {
     var snapshot = await FirebaseFirestore.instance.collection('Usuarios').get();
     var usuariosTemp = <String, FbUsuario>{};
     for (var doc in snapshot.docs) {
-      usuariosTemp[doc.id] = FbUsuario.fromFirestore(doc, null);
+      usuariosTemp[doc.id] = FbUsuario.fromFirestore(doc);
     }
     setState(() {
       usuariosMap = usuariosTemp;
@@ -109,32 +109,33 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    String? currentUid = currentUser != null ? FirebaseAuth.instance.currentUser?.uid : null;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Usuarios de la red social'),
       ),
-      drawer: DrawerCustom(currentUser: currentUser ?? FbUsuario(nombre: "Invitado", apellidos: "", edad: 0), uid: currentUid,),
+      drawer: DrawerCustom(currentUser: currentUser ?? FbUsuario(nombre: "Invitado", apellidos: "", edad: 0)),
       body: Column(
         children: [
           Expanded(
-            child: FutureBuilder<List<FbUsuario>>(
-              future: DataHolder.firebaseAdmin.obtenerUsuarios(),
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('Usuarios').snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  List<FbUsuario>? usuarios = snapshot.data;
-
-                  if (usuarios != null && usuarios.isNotEmpty) {
-                    return isList ? muestraListView(usuarios) : muestraGridView(usuarios);
-                  } else {
-                    return Text('No hay usuarios disponibles.');
-                  }
                 }
+                if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                }
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return Text('No hay usuarios disponibles.');
+                }
+
+                List<FbUsuario> usuarios = snapshot.data!.docs
+                    .map((QueryDocumentSnapshot<Object?> doc) =>
+                    FbUsuario.fromFirestore(doc as DocumentSnapshot<Map<String, dynamic>>))
+                    .toList();
+
+                return isList ? muestraListView(usuarios) : muestraGridView(usuarios);
               },
             ),
           ),
@@ -157,4 +158,5 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
   }
+
 }

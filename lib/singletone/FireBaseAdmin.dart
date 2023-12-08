@@ -53,18 +53,8 @@ class FirebaseAdmin {
 
     if (currentUser != null) {
       try {
-        DocumentSnapshot<Map<String, dynamic>> snapshot =
-        await FirebaseFirestore.instance.collection('Usuarios').doc(currentUser.uid).get();
-
-        if (snapshot.exists && snapshot.data() != null) {
-          var usuarioData = FbUsuario.fromFirestore(snapshot, null);
-          return FbUsuario(
-              nombre: usuarioData.nombre,
-              apellidos: usuarioData.apellidos,
-              edad: usuarioData.edad,
-              urlImagen: usuarioData.urlImagen
-          );
-        }
+        var snapshot = await FirebaseFirestore.instance.collection('Usuarios').doc(currentUser.uid).get();
+        return FbUsuario.fromFirestore(snapshot);
       } catch (e) {
         print('Error al cargar el usuario: $e');
       }
@@ -103,7 +93,7 @@ class FirebaseAdmin {
         await _db.collection('Usuarios').doc(user.uid).get();
         if (snapshot.exists) {
           print("Usuario encontrado: ${snapshot.data()}");
-          return FbUsuario.fromFirestore(snapshot, null);
+          return FbUsuario.fromFirestore(snapshot);
         }
       } catch (e) {
         print("Error al obtener información del usuario actual: $e");
@@ -119,7 +109,7 @@ class FirebaseAdmin {
       if (user != null) {
         DocumentSnapshot<Map<String, dynamic>> snapshot =
         await _db.collection('Usuarios').doc(user.uid).get();
-        return FbUsuario.fromFirestore(snapshot, null);
+        return FbUsuario.fromFirestore(snapshot);
       }
     } catch (e) {
       print("Error al obtener información del usuario: $e");

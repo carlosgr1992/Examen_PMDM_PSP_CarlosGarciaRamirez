@@ -13,14 +13,13 @@ class FbUsuario {
     this.urlImagen, //Parámetro opcional
   });
 
-  factory FbUsuario.fromFirestore(
-      DocumentSnapshot<Map<String, dynamic>> snapshot, SnapshotOptions? options) {
-    final data = snapshot.data();
+  factory FbUsuario.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot) {
+    var data = snapshot.data() ?? {}; //Usa un mapa vacío si no hay datos
     return FbUsuario(
-      nombre: data?['nombre'] ?? "",
-      apellidos: data?['apellidos'] ?? "",
-      edad: (data?['edad'] ?? 0) is int ? data!['edad'] as int : 0,
-      urlImagen: data?['urlImagen'],
+      nombre: data['nombre'] ?? "",
+      apellidos: data['apellidos'] ?? "",
+      edad: data['edad'] ?? 0,
+      urlImagen: data['urlImagen'] ?? '',
     );
   }
 
