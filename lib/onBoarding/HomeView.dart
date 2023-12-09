@@ -162,34 +162,44 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-Widget muestraGridView(List<FbUsuario> usuarios) {
-  return GridView.builder(
-    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 2,
-      crossAxisSpacing: 10,
-      mainAxisSpacing: 10,
-    ),
-    itemCount: usuarios.length,
-    itemBuilder: (context, index) {
-      FbUsuario usuario = usuarios[index];
-      String uid = usuariosMap.keys.firstWhere((key) => usuariosMap[key] == usuario, orElse: () => '');
-      return GestureDetector(
-        onTap: () => _navigateToUsuarioDetailsView(usuario),
-        child: Card(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              usuario.urlImagen != null && usuario.urlImagen!.isNotEmpty
-                  ? Image.network(usuario.urlImagen!, width: 80, height: 80, fit: BoxFit.cover)
-                  : Icon(Icons.person, size: 80),
-              SizedBox(height: 10),
-              Text('${usuario.nombre} ${usuario.apellidos}'),
-              Text('Edad: ${usuario.edad}'),
-            ],
+  Widget muestraGridView(List<FbUsuario> usuarios) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+      ),
+      itemCount: usuarios.length,
+      itemBuilder: (context, index) {
+        FbUsuario usuario = usuarios[index];
+        String uid = usuariosMap.keys.firstWhere((key) => usuariosMap[key] == usuario, orElse: () => '');
+
+        return GestureDetector(
+          onTap: () => _navigateToUsuarioDetailsView(usuario),
+          child: Card(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                usuario.urlImagen != null && usuario.urlImagen!.isNotEmpty
+                    ? ClipRRect(
+                  borderRadius: BorderRadius.circular(12.0), // Redondea las esquinas
+                  child: Image.network(
+                    usuario.urlImagen!,
+                    width: 80,
+                    height: 80,
+                    fit: BoxFit.cover,
+                  ),
+                )
+                    : Icon(Icons.person, size: 80),
+                SizedBox(height: 10),
+                Text('${usuario.nombre} ${usuario.apellidos}'),
+                Text('Edad: ${usuario.edad}'),
+              ],
+            ),
           ),
-        ),
-      );
-    },
-  );
-}
+        );
+      },
+    );
+  }
+
 }
