@@ -43,7 +43,7 @@ class DrawerCustom extends StatelessWidget {
             title: Text('Ajustes'),
             onTap: () {
               if (currentUser != null) {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // Cierra el drawer
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => UsuarioDetailsView(usuario: currentUser!, uid: currentUser!.id),

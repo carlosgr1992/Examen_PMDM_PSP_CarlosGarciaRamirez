@@ -67,7 +67,6 @@ class _EditUserViewState extends State<EditUserView> {
   }
 
   void _updateUser() async {
-    // Suponiendo que tienes una instancia de FirebaseAdmin llamada firebaseAdmin
     var firebaseAdmin = FirebaseAdmin();
     await firebaseAdmin.updateUser(
       widget.uid,
@@ -77,6 +76,7 @@ class _EditUserViewState extends State<EditUserView> {
       _imagenController.text,
     );
 
+    Navigator.pop(context);
     Navigator.pop(context);
   }
 }
