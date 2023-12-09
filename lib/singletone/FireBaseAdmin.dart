@@ -22,12 +22,12 @@ class FirebaseAdmin {
     }
   }
 
-  Future<void> updateUser(String uid, String nombre, String apellidos, int edad, String imagen) async {
-    await FirebaseFirestore.instance.collection('Usuarios').doc(uid).update({
+  Future<void> updateUser(String id, String nombre, String apellidos, int edad, String imagen) async {
+    await FirebaseFirestore.instance.collection('Usuarios').doc(id).update({
       'nombre': nombre,
       'apellidos': apellidos,
       'edad': edad,
-      'urlImagen' : imagen,
+      'urlImagen': imagen,
     });
   }
 

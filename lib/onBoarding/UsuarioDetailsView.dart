@@ -49,4 +49,6 @@ class UsuarioDetailsView extends StatelessWidget {
       ),
     );
   }
+
+
 }

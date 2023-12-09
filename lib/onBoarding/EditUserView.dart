@@ -1,6 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import '../fireStoreObjets/FbUsuario.dart';
-import '../singletone/DataHolder.dart';
 import '../singletone/FireBaseAdmin.dart';
 
 class EditUserView extends StatefulWidget {
@@ -17,6 +18,7 @@ class _EditUserViewState extends State<EditUserView> {
   final _nombreController = TextEditingController();
   final _apellidosController = TextEditingController();
   final _edadController = TextEditingController();
+  final _imagenController = TextEditingController(); // Controlador para URL de imagen
 
   @override
   void initState() {
@@ -24,6 +26,7 @@ class _EditUserViewState extends State<EditUserView> {
     _nombreController.text = widget.usuario.nombre;
     _apellidosController.text = widget.usuario.apellidos;
     _edadController.text = widget.usuario.edad.toString();
+    _imagenController.text = widget.usuario.urlImagen ?? '';
   }
 
   @override
@@ -49,6 +52,10 @@ class _EditUserViewState extends State<EditUserView> {
               decoration: InputDecoration(labelText: 'Edad'),
               keyboardType: TextInputType.number,
             ),
+            TextField(
+              controller: _imagenController,
+              decoration: InputDecoration(labelText: 'URL de Imagen'),
+            ),
             ElevatedButton(
               onPressed: _updateUser,
               child: Text('Guardar Cambios'),
@@ -60,14 +67,16 @@ class _EditUserViewState extends State<EditUserView> {
   }
 
   void _updateUser() async {
-    FbUsuario updatedUsuario = FbUsuario(
-      nombre: _nombreController.text,
-      apellidos: _apellidosController.text,
-      edad: int.parse(_edadController.text),
-      urlImagen: widget.usuario.urlImagen,
+    // Suponiendo que tienes una instancia de FirebaseAdmin llamada firebaseAdmin
+    var firebaseAdmin = FirebaseAdmin();
+    await firebaseAdmin.updateUser(
+      widget.uid,
+      _nombreController.text,
+      _apellidosController.text,
+      int.parse(_edadController.text),
+      _imagenController.text,
     );
 
-    await DataHolder.firebaseAdmin.updateUserDetails(updatedUsuario);
     Navigator.pop(context);
   }
 }

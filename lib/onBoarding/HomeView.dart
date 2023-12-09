@@ -17,6 +17,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   bool isList = true;
   FbUsuario? currentUser;
+  Map<String, FbUsuario> usuariosMap = {};
 
   @override
   void initState() {
@@ -41,6 +42,13 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
+  void _navigateToUsuarioDetailsView(FbUsuario usuario) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => UsuarioDetailsView(usuario: usuario, uid: usuario.id),
+      ),
+    );
+  }
   void _showAddUserDialog() {
     String nombre = '';
     String apellidos = '';
@@ -153,51 +161,43 @@ class _HomeViewState extends State<HomeView> {
       itemCount: usuarios.length,
       itemBuilder: (context, index) {
         FbUsuario usuario = usuarios[index];
+        String uid = usuariosMap.keys.firstWhere((key) => usuariosMap[key] == usuario, orElse: () => '');
         return ListTile(
           title: Text('${usuario.nombre} ${usuario.apellidos} - Edad: ${usuario.edad}'),
-          onTap: () {
-            // Aquí necesitarás encontrar el UID del usuario. Puedes modificar tu enfoque para obtenerlo.
-          },
+          onTap: () => _navigateToUsuarioDetailsView(usuario),
         );
       },
     );
   }
 
-  
-  Widget muestraGridView(List<FbUsuario> usuarios) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-      ),
-      itemCount: usuarios.length,
-      itemBuilder: (context, index) {
-        FbUsuario usuario = usuarios[index];
-        return GestureDetector(
-          onTap: () {
-            // Aquí necesitarás encontrar el UID del usuario. Puedes modificar tu enfoque para obtenerlo.
-          },
-          child: Card(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                usuario.urlImagen != null && usuario.urlImagen!.isNotEmpty
-                    ? Image.network(
-                  usuario.urlImagen!,
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.cover,
-                )
-                    : Icon(Icons.person, size: 80),
-                SizedBox(height: 10),
-                Text('${usuario.nombre} ${usuario.apellidos}'),
-                Text('Edad: ${usuario.edad}'),
-              ],
-            ),
+Widget muestraGridView(List<FbUsuario> usuarios) {
+  return GridView.builder(
+    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2,
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 10,
+    ),
+    itemCount: usuarios.length,
+    itemBuilder: (context, index) {
+      FbUsuario usuario = usuarios[index];
+      String uid = usuariosMap.keys.firstWhere((key) => usuariosMap[key] == usuario, orElse: () => '');
+      return GestureDetector(
+        onTap: () => _navigateToUsuarioDetailsView(usuario),
+        child: Card(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              usuario.urlImagen != null && usuario.urlImagen!.isNotEmpty
+                  ? Image.network(usuario.urlImagen!, width: 80, height: 80, fit: BoxFit.cover)
+                  : Icon(Icons.person, size: 80),
+              SizedBox(height: 10),
+              Text('${usuario.nombre} ${usuario.apellidos}'),
+              Text('Edad: ${usuario.edad}'),
+            ],
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
 }
