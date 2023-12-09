@@ -11,6 +11,7 @@ class TextButtonCustom extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Color(0xFFBAF9FF)),
         foregroundColor: MaterialStateProperty.all(Colors.black),
         overlayColor: MaterialStateProperty.all(Colors.lightBlueAccent.withOpacity(0.1)),
         side: MaterialStateProperty.all(BorderSide(color: Colors.lightBlueAccent)),

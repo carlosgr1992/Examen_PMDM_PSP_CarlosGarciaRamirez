@@ -35,6 +35,7 @@ class _EditUserViewState extends State<EditUserView> {
       appBar: AppBar(
         title: Text('Editar Usuario'),
       ),
+      backgroundColor: Color(0xFFDFFCFF),
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(

@@ -194,6 +194,9 @@ class _HomeViewState extends State<HomeView> {
                     width: 80,
                     height: 80,
                     fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(Icons.person, size: 80); // Ícono por defecto si la imagen falla
+                    },
                   ),
                 )
                     : Icon(Icons.person, size: 80),

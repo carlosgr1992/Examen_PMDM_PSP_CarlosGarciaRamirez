@@ -16,6 +16,7 @@ class AjustesView extends StatelessWidget {
       appBar: AppBar(
         title: Text('Ajustes del Usuario'),
       ),
+      backgroundColor: Color(0xFFDFFCFF),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -21,6 +21,7 @@ class LoginView extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.lightBlueAccent,
       ),
+      backgroundColor: Color(0xFFFEFFDE),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

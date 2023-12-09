@@ -28,12 +28,24 @@ class _UsuarioDetailsViewState extends State<UsuarioDetailsView> {
       appBar: AppBar(
         title: Text('Detalles del Usuario'),
       ),
+      backgroundColor: Color(0xFFDFFCFF),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             usuario!.urlImagen != null && usuario!.urlImagen!.isNotEmpty
-                ? Image.network(usuario!.urlImagen!, width: 100, height: 100, fit: BoxFit.cover)
+                ? ClipRRect(
+              borderRadius: BorderRadius.circular(12.0), // Redondea las esquinas
+              child: Image.network(
+                usuario!.urlImagen!,
+                width: 100,
+                height: 100,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(Icons.person, size: 100); // Ícono por defecto si la imagen falla
+                },
+              ),
+            )
                 : Icon(Icons.person, size: 100),
             SizedBox(height: 20),
             Text('Nombre: ${usuario!.nombre}'),
