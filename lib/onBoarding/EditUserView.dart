@@ -76,7 +76,6 @@ class _EditUserViewState extends State<EditUserView> {
       _imagenController.text,
     );
 
-    Navigator.pop(context);
-    Navigator.pop(context);
+    Navigator.of(context).popAndPushNamed("/homeView");
   }
 }

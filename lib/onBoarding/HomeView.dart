@@ -15,7 +15,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  bool isList = true;
+  bool isList = false;
   FbUsuario? currentUser;
   Map<String, FbUsuario> usuariosMap = {};
 
@@ -81,7 +81,7 @@ class _HomeViewState extends State<HomeView> {
                   'nombre': nombre,
                   'apellidos': apellidos,
                   'edad': edad,
-                  'urlImagen': '', // Dejar en blanco o poner una URL por defecto
+                  'urlImagen': '',
                 });
                 Navigator.of(context).pop();
               },
