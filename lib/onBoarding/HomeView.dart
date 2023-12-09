@@ -34,14 +34,6 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
-  void _navigateToAjustesView(String uid, FbUsuario usuario) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => AjustesView(usuario: usuario, uid: uid),
-      ),
-    );
-  }
-
   void _navigateToUsuarioDetailsView(FbUsuario usuario) {
     Navigator.of(context).push(
       MaterialPageRoute(

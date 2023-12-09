@@ -42,10 +42,13 @@ class DrawerCustom extends StatelessWidget {
             leading: Icon(Icons.settings),
             title: Text('Ajustes'),
             onTap: () {
-              if (currentUser != null && uid != null) {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => UsuarioDetailsView(usuario: currentUser!, uid: uid!),
-                ));
+              if (currentUser != null) {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => UsuarioDetailsView(usuario: currentUser!, uid: currentUser!.id),
+                  ),
+                );
               }else {
 
               }
