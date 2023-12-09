@@ -99,7 +99,9 @@ class _HomeViewState extends State<HomeView> {
         title: Text('Usuarios de la red social'),
       ),
       drawer: DrawerCustom(currentUser: currentUser ?? FbUsuario(nombre: "Invitado", apellidos: "", edad: 0)),
-      body: Column(
+    body: Container(
+    color: Color(0xFFDFFCFF),
+    child: Column(
         children: [
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
@@ -141,10 +143,14 @@ class _HomeViewState extends State<HomeView> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showAddUserDialog,
-        child: Icon(Icons.add),
-      ),
+    ),
+        floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 50),
+    child: FloatingActionButton(
+    onPressed: _showAddUserDialog,
+    child: Icon(Icons.add),
+    ),
+        ),
     );
   }
 
