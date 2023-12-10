@@ -58,6 +58,7 @@ class RegisterView extends StatelessWidget{
           ],
         ),
       ),
+        backgroundColor: Color(0xFFFEFFDE)
     );
   }
 
