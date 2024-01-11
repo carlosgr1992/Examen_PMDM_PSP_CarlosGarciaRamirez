@@ -193,6 +193,99 @@ TextEditingController _pokemonNameController = TextEditingController();
               Navigator.of(context).popAndPushNamed("/loginView");
             },
           ),
+          ListTile(
+            leading: Icon(Icons.search),
+            title: Text('Busca Usuario'),
+            onTap: () {
+              TextEditingController _searchController = TextEditingController();
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Buscar Edad por usuario'),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    hintText: 'Ingrese el usuario a buscar',
+                    contentPadding: EdgeInsets.all(16.0),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    String searchValue = _searchController.text.trim();
+                    if (searchValue.isNotEmpty) {
+                      Navigator.of(context).pop(); // Cerrar el diálogo de búsqueda
+
+                      List<Map<String, dynamic>> searchResults =
+                          await DataHolder.firebaseAdmin.searchAgeByName(searchValue);
+
+                      if (searchResults.isNotEmpty) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Resultados de la Búsqueda'),
+                              content: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  for (var result in searchResults)
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text('Nombre: ${result['nombre']}'),
+                                        Text('Edad: ${result['edad']}'),
+                                        // Agrega aquí otros campos que desees mostrar
+                                      ],
+                                    ),
+                                ],
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: Text('Aceptar'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Resultados de la Búsqueda'),
+                              content: Text('No se encontraron posts con el título proporcionado.'),
+                              actions: [
+                                TextButton(
+                                  child: Text('Aceptar'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    }
+                  },
+                  child: Text('Buscar'),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+            },
+          ),
         ],
       ),
     );
