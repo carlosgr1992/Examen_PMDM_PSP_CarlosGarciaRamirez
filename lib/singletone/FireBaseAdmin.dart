@@ -5,12 +5,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../fireStoreObjets/FbUsuario.dart';
+import 'HttpAdmin.dart';
 
 class FirebaseAdmin {
 
   final FirebaseFirestore db = FirebaseFirestore.instance;
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseFirestore _db = FirebaseFirestore.instance;
+  
 
   Future<User?> signIn(String email, String password) async {
     try {

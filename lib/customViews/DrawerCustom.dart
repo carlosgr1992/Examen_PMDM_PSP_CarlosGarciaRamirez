@@ -1,11 +1,27 @@
+import 'package:examen_pmdm_psp_carlosgarciaramirez/singletone/HttpAdmin.dart';
+import 'package:examen_pmdm_psp_carlosgarciaramirez/singletone/HttpAdmin.dart';
 import 'package:flutter/material.dart';
 import '../fireStoreObjets/FbUsuario.dart';
 import '../onBoarding/AjustesView.dart';
+import '../singletone/DataHolder.dart';
+import '../singletone/HttpAdmin.dart';
+import '../singletone/HttpAdmin.dart';
+import '../singletone/HttpAdmin.dart';
+import '../singletone/HttpAdmin.dart';
+import '../singletone/HttpAdmin.dart';
+import '../singletone/HttpAdmin.dart';
+import '../singletone/HttpAdmin.dart';
+import '../singletone/HttpAdmin.dart';
 
 class DrawerCustom extends StatelessWidget {
   final FbUsuario? currentUser;
 
+TextEditingController _pokemonNameController = TextEditingController();
   DrawerCustom({this.currentUser});
+
+  Function(int indice)? onItemTap;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +63,94 @@ class DrawerCustom extends StatelessWidget {
             onTap: () {
               Navigator.of(context).popAndPushNamed("/homeView");
             },
+          ),
+          ListTile(
+            title: const Text('Consultar Pokemon'),
+            onTap: () {
+               showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Buscar Pokémon'),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: _pokemonNameController,
+                  decoration: InputDecoration(labelText: 'Nombre del Pokémon'),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                child: Text('Buscar'),
+                onPressed: () async {
+                  String pokemonName = _pokemonNameController.text.trim().toLowerCase();
+                  if (pokemonName.isNotEmpty) {
+                    Navigator.of(context).pop(); // Cerrar el diálogo de búsqueda
+
+                    Map<String, dynamic> pokemonData =
+                    await DataHolder.httpAdmin.fetchPokemonData(pokemonName);
+                    List<String> abilities = [];
+
+    // Verificar si el diccionario contiene la clave 'abilities'
+    if (pokemonData.containsKey('abilities')) {
+      // Obtener la lista de habilidades
+      List<dynamic> abilitiesList = pokemonData['abilities'];
+
+      // Extraer los nombres de las habilidades
+      abilities = abilitiesList
+          .map<String>((ability) => ability['ability']['name'])
+          .toList();
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Información'),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Nombre: ${pokemonData['name']}'),
+              Text('Habilidades: ${abilities.join(', ')}'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+                  }
+                },
+              ),
+              TextButton(
+                child: Text('Cancelar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+            },
+          ),
+          ListTile(
+
+            title: const Text('Chiste Aleatorio'),
+            onTap: () {
+              onItemTap!(5);
+            },
+
           ),
           ListTile(
             leading: Icon(Icons.settings),

@@ -211,4 +211,15 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
+  void _showPokemonInfoDialog(BuildContext context, Map<String, dynamic> pokemonData) {
+    List<String> abilities = [];
+    
+    if (pokemonData.containsKey('abilities')) {
+      List<dynamic> abilitiesList = pokemonData['abilities'];
+      
+      abilities = abilitiesList
+          .map<String>((ability) => ability['ability']['name'])
+          .toList();
+    }
+  }
 }
