@@ -12,7 +12,23 @@ class FirebaseAdmin {
   final FirebaseFirestore db = FirebaseFirestore.instance;
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseFirestore _db = FirebaseFirestore.instance;
-  
+
+
+  Future<List<Map<String, dynamic>>> searchPostsByTitle(String searchValue) async {
+    QuerySnapshot querySnapshot = await db
+        .collection('Usuarios')
+        .where('nombre', isGreaterThanOrEqualTo: searchValue)
+        .get();
+
+    return querySnapshot.docs
+        .where((doc) =>
+    (doc['nombre'] as String).contains(searchValue) ||
+        (doc['edad'] as String).contains(searchValue))
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+  }
+
+
 
   Future<User?> signIn(String email, String password) async {
     try {
