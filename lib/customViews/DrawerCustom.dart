@@ -145,10 +145,32 @@ TextEditingController _pokemonNameController = TextEditingController();
             },
           ),
           ListTile(
-
             title: const Text('Chiste Aleatorio'),
-            onTap: () {
-              onItemTap!(5);
+            onTap: () async {
+              String chiste = await DataHolder.httpAdmin.buscaChistes();
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Información'),
+              content: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Chiste informático: $chiste'),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  child: Text('Aceptar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
             },
 
           ),
