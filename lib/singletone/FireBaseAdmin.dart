@@ -33,7 +33,6 @@ class FirebaseAdmin {
         .toList();
   }
 
-
   Future<User?> signIn(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
