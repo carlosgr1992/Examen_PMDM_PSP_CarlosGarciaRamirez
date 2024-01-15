@@ -20,19 +20,6 @@ class HttpAdmin {
     }
   }
 
-  Future<String> fetchChuckNorrisJoke() async {
-    var url = Uri.https('api.chucknorris.io', '/jokes/random');
-
-    var response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      var jsonResponse = convert.jsonDecode(response.body) as Map<String, dynamic>;
-      return jsonResponse['value'];
-    } else {
-      throw Exception('Error al obtener la broma de Chuck Norris');
-    }
-  }
-
   Future<String> buscaChistes() async {
     var url = Uri.parse('https://v2.jokeapi.dev/joke/Programming?lang=es');
     var response = await http.get(url);
